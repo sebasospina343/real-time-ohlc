@@ -2,7 +2,7 @@ from quixstreams import Application
 from src.kraken_api import KrakenWebsocketTradeAPI
 from typing import List, Dict
 from loguru import logger
-from src import config
+from src.config import config
 
 
 def produce_trades(
