@@ -1,0 +1,33 @@
+name: feature_pipeline
+networks:
+  redpanda_network:
+    name: redpanda_network
+    driver: bridge
+services:
+  trade-producer:
+    container_name: trade-producer
+    build:
+      context: ../services/trade_producer
+    networks:
+      - redpanda_network
+    environment:
+      - KAFKA_BROKER_ADDRESS=redpanda-0:9092
+
+  trade-to-ohlc:
+    container_name: trade-to-ohlc
+    build:
+      context: ../services/trade_to_ohlc
+    networks:
+      - redpanda_network
+    environment:
+      - KAFKA_BROKER_ADDRESS=redpanda-0:9092
+      - OHLC_WINDOWS_SECONDS=10
+
+  kafka-to-feature-store:
+    container_name: kafka-to-feature-store
+    build:
+      context: ../services/kafka_to_feature_store
+    networks:
+      - redpanda_network
+    environment:
+      - KAFKA_BROKER_ADDRESS=redpanda-0:9092
