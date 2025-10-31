@@ -9,14 +9,18 @@ def kafka_to_feature_store(
     kafka_broker_address: str,
     feature_group_name: str,
     feature_group_version: int,
+    buffer_size: int,
 ) -> None:
     """
     Converts Kafka messages to feature store.
     """
     app = Application(
         broker_address=kafka_broker_address,
-        consumer_group="kafka_to_feature_store"
+        consumer_group="kafka_to_feature_store",
+        auto_offset_reset="earliest"
     )
+
+    buffer = []
     
     with app.get_consumer() as consumer:
         consumer.subscribe(topics=[kafka_topic])
@@ -33,21 +37,30 @@ def kafka_to_feature_store(
                 continue
 
             ohlc_candle = json.loads(msg.value().decode('utf-8'))
+            buffer.append(ohlc_candle)
+
             logger.info(f"Message received from Kafka: {ohlc_candle}")
 
+            if len(buffer) >= buffer_size:
+                logger.debug(buffer)
+                push_data_to_feature_store(
+                    feature_group_name=feature_group_name,
+                    feature_group_version=feature_group_version,
+                    data=buffer,
+                )
 
-            push_data_to_feature_store(
-                feature_group_name=feature_group_name,
-                feature_group_version=feature_group_version,
-                data=ohlc_candle,
-            )
+                buffer = []
 
             consumer.store_offsets(message=msg)
 
 if __name__ == "__main__":
-    kafka_to_feature_store(
-        kafka_topic=config.kafka_topic,
-        kafka_broker_address=config.kafka_broker_address,
-        feature_group_name=config.feature_group_name,
-        feature_group_version=config.feature_group_version,
-    )
+    try:
+        kafka_to_feature_store(
+            kafka_topic=config.kafka_topic,
+            kafka_broker_address=config.kafka_broker_address,
+            feature_group_name=config.feature_group_name,
+            feature_group_version=config.feature_group_version,
+            buffer_size=config.buffer_size,
+        )
+    except KeyboardInterrupt:
+        logger.info("KeyboardInterrupt received, exiting...")

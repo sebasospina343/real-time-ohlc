@@ -1,5 +1,5 @@
 import hopsworks
-from typing import Dict
+from typing import Dict, List
 import pandas as pd
 from src.config import config
 from loguru import logger
@@ -7,7 +7,7 @@ from loguru import logger
 def push_data_to_feature_store(
     feature_group_name: str,
     feature_group_version: str,
-    data: Dict,
+    data: List[Dict],
 ) -> None:
     """
     Pushes data to feature store.
@@ -32,6 +32,6 @@ def push_data_to_feature_store(
         logger.error(f"Error creating feature group: {e}")
         raise e
 
-    data = pd.DataFrame([data])
+    data = pd.DataFrame(data)
 
-    ohlc_feature_group.insert(data)
+    ohlc_feature_group.insert(data, write_options={"start_offline_materialization": False})
