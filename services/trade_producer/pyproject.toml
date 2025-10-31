@@ -10,6 +10,7 @@ python = "^3.12"
 quixstreams = "^3.23.1"
 websocket-client = "^1.9.0"
 loguru = "^0.7.3"
+requests = "^2.32.5"
 
 
 [tool.poetry.group.dev.dependencies]
