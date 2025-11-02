@@ -4,7 +4,6 @@ from kraken_api.rest import KrakenRestAPI
 from typing import List, Dict
 from loguru import logger
 from config import config
-import time
 
 def produce_trades(
     kafka_broker_address: str,
@@ -34,12 +33,7 @@ def produce_trades(
     if live_or_historical == 'live':
         kraken_api = KrakenWebsocketTradeAPI(product_id=product_id)
     else:
-        # Milliseconds in a day: 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
-        ms_per_day = 24 * 60 * 60 * 1000
-        to_ms = int(time.time() * 1000)
-        from_ms = to_ms - (last_n_days * ms_per_day)
-
-        kraken_api = KrakenRestAPI(product_id=product_id, from_ms=from_ms, to_ms=to_ms)
+        kraken_api = KrakenRestAPI(product_id=product_id, last_n_days=last_n_days)
 
     with app.get_producer() as producer:
         while True:

@@ -1,20 +1,31 @@
 import requests
 from typing import List, Dict
 import json
+from datetime import datetime, timezone
+from typing import Tuple
 
 class KrakenRestAPI:
-    URL = 'https://api.kraken.com/0/public/Trades?pair={product_id}&since={from_ms}'
+    URL = 'https://api.kraken.com/0/public/Trades?pair={product_id}&since={since_sec}'
 
     def __init__(
         self,
         product_id: str,
-        from_ms: int,
-        to_ms: int,
+        last_n_days: int,
     ) -> None:
         self.product_id = product_id
-        self.from_ms = from_ms
-        self.to_ms = to_ms
+        self.from_ms, self.to_ms = self._init_from_to_ms(last_n_days)
         self._is_done = False
+        self.last_trade_ms = self.from_ms
+        self.last_n_days = last_n_days
+
+    @staticmethod
+    def _init_from_to_ms(last_n_days: int)->Tuple[int, int]:
+       # Milliseconds in a day: 24 hours * 60 minutes * 60 seconds * 1000 milliseconds
+        today_date = datetime.now(timezone.utc).replace(hour=0, minute=0, second=0, microsecond=0)
+        to_ms = int(today_date.timestamp() * 1000)
+        from_ms = to_ms - (last_n_days * 24 * 60 * 60 * 1000)
+
+        return from_ms, to_ms
 
     def get_trades(self) -> List[Dict]:
         """
@@ -22,9 +33,9 @@ class KrakenRestAPI:
         """
         payload = {}
         headers = {'accept': 'application/json'}
-        url = self.URL.format(product_id=self.product_id, from_ms=int(self.from_ms // 1000)) #convert from milliseconds to seconds
 
-        # breakpoint()
+        since_sec = self.last_trade_ms // 1000
+        url = self.URL.format(product_id=self.product_id, since_sec=since_sec) #convert from milliseconds to seconds
 
         response = requests.get(url, headers=headers, data=payload)
 
@@ -44,8 +55,11 @@ class KrakenRestAPI:
             } for trade in data['result'][pair]
         ]
 
-        if int(data['result']['last']) >= self.to_ms:
-            self._is_done = True
+        trades = [trade for trade in trades if trade['timestamp'] <= self.to_ms]
+
+        last_ts_in_ns = int(data['result']['last'])
+        self.last_trade_ms = last_ts_in_ns // 1_000_000 #convert from nanoseconds to milliseconds
+        self._is_done = self.last_trade_ms >= self.to_ms
 
         return trades
 
