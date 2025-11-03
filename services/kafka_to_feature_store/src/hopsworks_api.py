@@ -8,6 +8,7 @@ def push_data_to_feature_store(
     feature_group_name: str,
     feature_group_version: str,
     data: List[Dict],
+    online_or_offline: str,
 ) -> None:
     """
     Pushes data to feature store.
@@ -34,4 +35,4 @@ def push_data_to_feature_store(
 
     data = pd.DataFrame(data)
 
-    ohlc_feature_group.insert(data, write_options={"start_offline_materialization": False})
+    ohlc_feature_group.insert(data, write_options={"start_offline_materialization": True if online_or_offline == 'offline' else False})

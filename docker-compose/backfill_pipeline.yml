@@ -1,4 +1,4 @@
-name: feature_pipeline
+name: backfill_pipeline
 networks:
   redpanda_network:
     name: redpanda_network
@@ -12,7 +12,8 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
-      - LIVE_OR_HISTORICAL=live
+      - LIVE_OR_HISTORICAL=historical
+      - LAST_N_DAYS=7
 
   trade-to-ohlc:
     container_name: trade-to-ohlc
@@ -22,7 +23,7 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
-      - OHLC_WINDOWS_SECONDS=10
+      - OHLC_WINDOWS_SECONDS=60
 
   kafka-to-feature-store:
     container_name: kafka-to-feature-store
@@ -32,3 +33,4 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
+      - LIVE_OR_HISTORICAL=historical

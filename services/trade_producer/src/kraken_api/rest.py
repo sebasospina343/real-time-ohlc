@@ -3,6 +3,8 @@ from typing import List, Dict
 import json
 from datetime import datetime, timezone
 from typing import Tuple
+from loguru import logger
+from time import sleep
 
 class KrakenRestAPI:
     URL = 'https://api.kraken.com/0/public/Trades?pair={product_id}&since={since_sec}'
@@ -40,12 +42,13 @@ class KrakenRestAPI:
         response = requests.get(url, headers=headers, data=payload)
 
         data = json.loads(response.text)
-        # extract the first key from the result
-        pair = list(data['result'].keys())[0]
 
-        if data['error']:
-            raise Exception(data['error'])
+        if ('error' in data and data['error'] != []):
+            logger.info("Too many requests. Sleeping for 30 seconds.")
+            sleep(30)
+
         
+        pair = list(data['result'].keys())[0]
         trades = [
             {
                 'product_id': self.product_id,
@@ -61,6 +64,8 @@ class KrakenRestAPI:
         self.last_trade_ms = last_ts_in_ns // 1_000_000 #convert from nanoseconds to milliseconds
         self._is_done = self.last_trade_ms >= self.to_ms
 
+        # slow down the rate
+        sleep(1)
         return trades
 
     def is_done(self) -> bool:

@@ -12,5 +12,6 @@ class Config(BaseSettings):
     project_name: str = os.environ['HOPSWORKS_PROJECT_NAME']
     api_key: str = os.environ['HOPSWORKS_API_KEY']
     buffer_size: int = 1
+    live_or_historical: str = 'live'
 
 config = Config()
