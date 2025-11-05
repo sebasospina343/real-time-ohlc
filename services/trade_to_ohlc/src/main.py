@@ -1,7 +1,15 @@
 from datetime import timedelta
 from config import config
 from loguru import logger
-from typing import Dict
+from typing import Dict, Any
+
+def custom_timestamp_extractor(
+    value: Any,
+    headers: Any,
+    timestamp: float, # in milliseconds
+    timestamp_type
+) -> int:
+    return value['timestamp_ms']
 
 def init_ohlc_candle(value: Dict) -> Dict:
     return {
@@ -38,7 +46,11 @@ def trade_to_ohlc(
         consumer_group="trade_to_ohlc_5",
     )
 
-    input_topic = app.topic(name=kafka_input_topic, value_deserializer='json')
+    input_topic = app.topic(
+        name=kafka_input_topic,
+        value_deserializer='json',
+        timestamp_extractor=custom_timestamp_extractor
+    )
     output_topic = app.topic(name=kafka_output_topic, value_serializer='json')
 
     sdf = app.dataframe(input_topic)
