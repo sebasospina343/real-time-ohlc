@@ -3,6 +3,8 @@ from websocket import create_connection
 import json
 from loguru import logger
 from datetime import datetime
+from .Trade import Trade
+
 
 class KrakenWebsocketTradeAPI:
     URL = 'wss://ws.kraken.com/v2'
@@ -39,7 +41,7 @@ class KrakenWebsocketTradeAPI:
         _ = self._ws.recv()
         _ = self._ws.recv()
 
-    def get_trades(self) -> List[Dict]:
+    def get_trades(self) -> List[Trade]:
         message = self._ws.recv()
 
         if 'heartbeat' in message:
@@ -50,12 +52,18 @@ class KrakenWebsocketTradeAPI:
         trades = []
         for trade in message['data']:
             trades.append(
-                {
-                    'product_id': self.product_id,
-                    'price': trade['price'],
-                    'volume': trade['qty'],
-                    'timestamp': int(datetime.strptime(trade['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000),
-                }
+                # {
+                #     'product_id': self.product_id,
+                #     'price': trade['price'],
+                #     'volume': trade['qty'],
+                #     'timestamp': int(datetime.strptime(trade['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000),
+                # }
+                Trade(
+                    product_id=self.product_id,
+                    price=trade['price'],
+                    volume=trade['qty'],
+                    timestamp_ms=int(datetime.strptime(trade['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000),
+                )
             )
 
         return trades

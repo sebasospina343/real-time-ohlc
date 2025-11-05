@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 from typing import Tuple
 from loguru import logger
 from time import sleep
+from .Trade import Trade
 
 class KrakenRestAPI:
     URL = 'https://api.kraken.com/0/public/Trades?pair={product_id}&since={since_sec}'
@@ -29,7 +30,7 @@ class KrakenRestAPI:
 
         return from_ms, to_ms
 
-    def get_trades(self) -> List[Dict]:
+    def get_trades(self) -> List[Trade]:
         """
         Fetches a batch of trades from the Kraken API.
         """
@@ -49,16 +50,15 @@ class KrakenRestAPI:
 
         
         pair = list(data['result'].keys())[0]
-        trades = [
-            {
-                'product_id': self.product_id,
-                'price': float(trade[0]),
-                'volume': float(trade[1]),
-                'timestamp': int(trade[2]),
-            } for trade in data['result'][pair]
-        ]
 
-        trades = [trade for trade in trades if trade['timestamp'] <= self.to_ms]
+        trades = [Trade(
+            product_id=self.product_id,
+            price=float(trade[0]),
+            volume=float(trade[1]),
+            timestamp_ms=int(trade[2]) * 1000,
+        ) for trade in data['result'][pair]]
+
+        trades = [trade for trade in trades if trade.timestamp_ms <= self.to_ms]
 
         last_ts_in_ns = int(data['result']['last'])
         self.last_trade_ms = last_ts_in_ns // 1_000_000 #convert from nanoseconds to milliseconds

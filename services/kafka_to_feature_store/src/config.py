@@ -11,7 +11,7 @@ class Config(BaseSettings):
     feature_group_version: int = 1
     project_name: str = os.environ['HOPSWORKS_PROJECT_NAME']
     api_key: str = os.environ['HOPSWORKS_API_KEY']
-    buffer_size: int = 1
+    buffer_size: int = os.environ['BUFFER_SIZE']
     live_or_historical: str = 'live'
 
 config = Config()

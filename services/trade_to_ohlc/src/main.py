@@ -35,7 +35,7 @@ def trade_to_ohlc(
 
     app = Application(
         broker_address=kafka_broker_address,
-        consumer_group="trade_to_ohlc_2",
+        consumer_group="trade_to_ohlc_5",
     )
 
     input_topic = app.topic(name=kafka_input_topic, value_deserializer='json')
@@ -45,7 +45,7 @@ def trade_to_ohlc(
 
     # Apply transformation
     sdf = sdf.tumbling_window(duration_ms=timedelta(seconds=ohlc_windows_seconds))
-    sdf = sdf.reduce(reducer=update_ohlc_candle, initializer=init_ohlc_candle).current()
+    sdf = sdf.reduce(reducer=update_ohlc_candle, initializer=init_ohlc_candle).final()
 
     sdf['open'] = sdf['value']['open']
     sdf['high'] = sdf['value']['high']

@@ -7,6 +7,9 @@ run: build
 dev:
 	KAFKA_BROKER_ADDRESS=localhost:19092 OHLC_WINDOWS_SECONDS=60 poetry run python src/main.py
 
+dev-historical:
+	KAFKA_BROKER_ADDRESS=localhost:19092 OHLC_WINDOWS_SECONDS=60 poetry run python src/main.py
+
 lint:
 	ruff check --fix
 

@@ -4,6 +4,7 @@ from kraken_api.rest import KrakenRestAPI
 from typing import List, Dict
 from loguru import logger
 from config import config
+from kraken_api.Trade import Trade
 
 def produce_trades(
     kafka_broker_address: str,
@@ -24,7 +25,6 @@ def produce_trades(
     Returns:
         None
     """
-    assert live_or_historical in ['live', 'historical'], f'Invalid live_or_historical value: {live_or_historical}'
 
     app = Application(broker_address=kafka_broker_address)
 
@@ -42,20 +42,20 @@ def produce_trades(
                 break
 
 
-            trades: List[Dict] = kraken_api.get_trades()
+            trades: List[Trade] = kraken_api.get_trades()
 
             for trade in trades:
                 message = topic.serialize(
-                    key=trade['product_id'], 
-                    value=trade,
-                    timestamp_ms=trade['timestamp'],
+                    key=trade.product_id, 
+                    value=trade.model_dump(),
+                    # timestamp_ms=trade.timestamp_ms,#
                 )
-                # breakpoint()
+
                 producer.produce(
                     topic=kafka_topic_name, 
                     value=message.value, 
                     key=message.key,
-                    timestamp=message.timestamp,
+                    # timestamp=message.timestamp,
                 )
                 logger.info(f'Message sent to Kafka: {trade}')
 

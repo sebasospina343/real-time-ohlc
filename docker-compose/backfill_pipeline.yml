@@ -34,3 +34,4 @@ services:
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
       - LIVE_OR_HISTORICAL=historical
+      - BUFFER_SIZE=1440
