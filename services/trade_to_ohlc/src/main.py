@@ -35,7 +35,7 @@ def trade_to_ohlc(
 
     app = Application(
         broker_address=kafka_broker_address,
-        consumer_group="trade_to_ohlc",
+        consumer_group="trade_to_ohlc_2",
     )
 
     input_topic = app.topic(name=kafka_input_topic, value_deserializer='json')

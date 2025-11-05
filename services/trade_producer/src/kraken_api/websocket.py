@@ -2,7 +2,7 @@ from typing import List, Dict
 from websocket import create_connection
 import json
 from loguru import logger
-
+from datetime import datetime
 
 class KrakenWebsocketTradeAPI:
     URL = 'wss://ws.kraken.com/v2'
@@ -54,7 +54,7 @@ class KrakenWebsocketTradeAPI:
                     'product_id': self.product_id,
                     'price': trade['price'],
                     'volume': trade['qty'],
-                    'timestamp': trade['timestamp'],
+                    'timestamp': int(datetime.strptime(trade['timestamp'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() * 1000),
                 }
             )
 
