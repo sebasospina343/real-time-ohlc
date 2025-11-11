@@ -1,19 +1,15 @@
 from pydantic_settings import BaseSettings
 import os
 from dotenv import load_dotenv, find_dotenv
-from typing import Optional
 
 load_dotenv(find_dotenv())
 
 class Config(BaseSettings):
-    kafka_broker_address: Optional[str] = None
-    kafka_topic: str = os.environ.get('KAFKA_TOPIC')
-    kafka_consumer_group: str = os.environ.get('KAFKA_CONSUMER_GROUP')
     feature_group_name: str = os.environ.get('FEATURE_GROUP_NAME')
     feature_group_version: int = os.environ.get('FEATURE_GROUP_VERSION')
-    buffer_size: int = os.environ.get('BUFFER_SIZE')
+    feature_view_name: str = os.environ.get('FEATURE_VIEW_NAME')
+    feature_view_version: int = os.environ.get('FEATURE_VIEW_VERSION')
     project_name: str = os.environ.get('HOPSWORKS_PROJECT_NAME')
     api_key: str = os.environ.get('HOPSWORKS_API_KEY')
-    live_or_historical: str = os.environ.get('LIVE_OR_HISTORICAL')
 
 config = Config()

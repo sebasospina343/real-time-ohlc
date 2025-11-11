@@ -48,14 +48,14 @@ def produce_trades(
                 message = topic.serialize(
                     key=trade.product_id, 
                     value=trade.model_dump(),
-                    # timestamp_ms=trade.timestamp_ms,#
+                    timestamp_ms=trade.timestamp_ms
                 )
 
                 producer.produce(
                     topic=kafka_topic_name, 
                     value=message.value, 
                     key=message.key,
-                    # timestamp=message.timestamp,
+                    timestamp=message.timestamp,
                 )
                 logger.info(f'Message sent to Kafka: {trade}')
 

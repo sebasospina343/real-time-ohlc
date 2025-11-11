@@ -34,6 +34,7 @@ def trade_to_ohlc(
     kafka_output_topic: str,
     kafka_broker_address: str,
     ohlc_windows_seconds: int,
+    kafka_consumer_group: str,
 ) -> None:
     """
     Converts trades to OHLCs.
@@ -43,7 +44,8 @@ def trade_to_ohlc(
 
     app = Application(
         broker_address=kafka_broker_address,
-        consumer_group="trade_to_ohlc_5",
+        consumer_group=kafka_consumer_group,
+        auto_offset_reset="earliest"
     )
 
     input_topic = app.topic(
@@ -56,7 +58,12 @@ def trade_to_ohlc(
     sdf = app.dataframe(input_topic)
 
     # Apply transformation
-    sdf = sdf.tumbling_window(duration_ms=timedelta(seconds=ohlc_windows_seconds))
+    # Add a small grace period to handle slightly late data without delaying window closure
+    grace_period_ms = timedelta(seconds=10)
+    sdf = sdf.tumbling_window(
+        duration_ms=timedelta(seconds=ohlc_windows_seconds),
+        grace_ms=grace_period_ms
+    )
     sdf = sdf.reduce(reducer=update_ohlc_candle, initializer=init_ohlc_candle).final()
 
     sdf['open'] = sdf['value']['open']
@@ -73,6 +80,7 @@ def trade_to_ohlc(
     sdf = sdf.update(logger.info)
     
     sdf = sdf.to_topic(output_topic)
+    
 
     app.run(sdf)
 
@@ -82,4 +90,5 @@ if __name__ == '__main__':
         kafka_output_topic=config.kafka_output_topic,
         kafka_broker_address=config.kafka_broker_address,
         ohlc_windows_seconds=config.ohlc_windows_seconds,
+        kafka_consumer_group=config.kafka_consumer_group,
     )

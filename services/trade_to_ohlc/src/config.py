@@ -10,5 +10,6 @@ class Config(BaseSettings):
     kafka_output_topic: str = os.environ.get('KAFKA_OUTPUT_TOPIC')
     kafka_broker_address:Optional[str] = None
     ohlc_windows_seconds: int = os.environ['OHLC_WINDOWS_SECONDS']
+    kafka_consumer_group: str = os.environ.get('KAFKA_CONSUMER_GROUP')
 
 config = Config()

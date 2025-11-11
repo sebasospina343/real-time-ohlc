@@ -12,6 +12,7 @@ def get_current_utc_seconds() -> int:
 def kafka_to_feature_store(
     kafka_topic: str,
     kafka_broker_address: str,
+    kafka_consumer_group: str,
     feature_group_name: str,
     feature_group_version: int,
     buffer_size: Optional[int] = None,
@@ -22,7 +23,7 @@ def kafka_to_feature_store(
     """
     app = Application(
         broker_address=kafka_broker_address,
-        consumer_group="kafka_to_feature_store",
+        consumer_group=kafka_consumer_group,
         auto_offset_reset="earliest"
     )
 
@@ -40,19 +41,19 @@ def kafka_to_feature_store(
             if msg is None:
                 n_sec = 10
                 if(get_current_utc_seconds() - last_saved_to_feature_ts) > n_sec:
-                    logger.info(f"Time exceeded. Pushing data to feature store: {kafka_topic}")
-                    push_data_to_feature_store(
-                        feature_group_name=feature_group_name,
-                        feature_group_version=feature_group_version,
-                        data=buffer,
-                        online_or_offline='online' if live_or_historical == 'live' else 'offline',
-                    )
-                    buffer = []
-                    last_saved_to_feature_ts = get_current_utc_seconds()
-                else:
-                    continue
+                    if len(buffer) > 0:
+                        logger.info(f"Time exceeded. Pushing data to feature store: {kafka_topic}")
+                        push_data_to_feature_store(
+                            feature_group_name=feature_group_name,
+                            feature_group_version=feature_group_version,
+                            data=buffer,
+                            online_or_offline='online' if live_or_historical == 'live' else 'offline',
+                        )
+                        buffer = []
+                        last_saved_to_feature_ts = get_current_utc_seconds()
+                continue
 
-            if msg.error():
+            if msg.error() :
                 logger.error(f"kafka_to_feature_store Error: {msg.error()}")
                 continue
 
@@ -81,6 +82,7 @@ if __name__ == "__main__":
         kafka_to_feature_store(
             kafka_topic=config.kafka_topic,
             kafka_broker_address=config.kafka_broker_address,
+            kafka_consumer_group=config.kafka_consumer_group,
             feature_group_name=config.feature_group_name,
             feature_group_version=config.feature_group_version,
             buffer_size=config.buffer_size,

@@ -6,7 +6,7 @@ from loguru import logger
 
 def push_data_to_feature_store(
     feature_group_name: str,
-    feature_group_version: str,
+    feature_group_version: int,
     data: List[Dict],
     online_or_offline: str,
 ) -> None:
@@ -33,6 +33,15 @@ def push_data_to_feature_store(
         logger.error(f"Error creating feature group: {e}")
         raise e
 
-    data = pd.DataFrame(data)
-
-    ohlc_feature_group.insert(data, write_options={"start_offline_materialization": True if online_or_offline == 'offline' else False})
+    if not data:
+        logger.warning("No data to push to feature store, skipping insert")
+        return
+    
+    df = pd.DataFrame(data)
+    
+    if df.empty:
+        logger.warning("DataFrame is empty, skipping insert")
+        return
+    
+    logger.info(f"Pushing {len(df)} records with columns: {list(df.columns)}")
+    ohlc_feature_group.insert(df, write_options={"start_offline_materialization": True if online_or_offline == 'offline' else False})

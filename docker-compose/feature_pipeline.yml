@@ -12,7 +12,9 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
-      - LIVE_OR_HISTORICAL=live
+    env_file:
+      - ../services/trade_producer/.live.env
+    restart: always
 
   trade-to-ohlc:
     container_name: trade-to-ohlc
@@ -22,7 +24,9 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
-      - OHLC_WINDOWS_SECONDS=10
+    env_file:
+      - ../services/trade_to_ohlc/.live.env
+    restart: always
 
   kafka-to-feature-store:
     container_name: kafka-to-feature-store
@@ -32,3 +36,6 @@ services:
       - redpanda_network
     environment:
       - KAFKA_BROKER_ADDRESS=redpanda-0:9092
+    env_file:
+      - ../services/kafka_to_feature_store/.live.env
+    restart: always
