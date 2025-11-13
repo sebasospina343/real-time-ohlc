@@ -58,6 +58,11 @@ class KrakenRestAPI:
             timestamp_ms=int(trade[2]) * 1000,
         ) for trade in data['result'][pair]]
 
+        if trades [-1].timestamp_ms > self.last_trade_ms:
+            self.last_trade_ms = trades[-1].timestamp_ms + 1
+        else:
+            self.last_trade_ms = trades[-1].timestamp_ms
+
         trades = [trade for trade in trades if trade.timestamp_ms <= self.to_ms]
 
         last_ts_in_ns = int(data['result']['last'])
