@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "features-dashboard"
+name = "tools2"
 version = "0.1.0"
 description = ""
 authors = ["Sebastian Ospina <sebasospina343@users.noreply.github.com>"]
@@ -7,11 +7,9 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<3.13"
-streamlit = "^1.51.0"
 hopsworks = "^4.4.2"
-pydantic-settings = "^2.11.0"
-bokeh = "2.4.3"
-pyarrow = "^17.0.0"
+pydantic-settings = "^2.12.0"
+pyarrow = "^22.0.0"
 
 
 [build-system]

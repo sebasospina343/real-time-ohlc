@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "src"
+name = "kafka-to-feature-store"
 version = "0.1.0"
 description = ""
 authors = ["Sebastian Ospina <sebasospina343@users.noreply.github.com>"]
