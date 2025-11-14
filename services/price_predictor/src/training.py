@@ -4,6 +4,10 @@ import pandas as pd
 from typing import List
 from loguru import logger
 from typing import Tuple
+from baseline_model import BaselineModel
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import confusion_matrix
+from sklearn.metrics import classification_report
 
 def split_data_into_train_and_test(
     data: pd.DataFrame,
@@ -76,7 +80,7 @@ def train(
 
     logger.info(f"Splitting data into train and test")
     ohlc_train, ohlc_test = split_data_into_train_and_test(data=ohlc_data, last_n_days_to_test_model=last_n_days_to_test_model)
-    # breakpoint()
+
     # missing candles populated
     logger.info(f"Interpolating missing candles for train data")
     ohlc_train = interpolate_missing_candles(ohlc_train)
@@ -102,6 +106,30 @@ def train(
     logger.debug(ohlc_train['target_metric'].value_counts())
     logger.info(f"Distribution of the target metric for test data")
     logger.debug(ohlc_test['target_metric'].value_counts())
+
+    X_train = ohlc_train.drop(columns=['target_metric'])
+    y_train = ohlc_train['target_metric']
+    X_test = ohlc_test.drop(columns=['target_metric'])
+    y_test = ohlc_test['target_metric']
+
+    baseline_model = BaselineModel(
+        n_candles_into_future=prediction_window_sec // ohlc_window_sec,
+        discretization_tresholds=discretization_tresholds,
+    )
+
+    y_test_predictions = baseline_model.predict(X_test)
+
+    # get the accuracy
+    accuracy = accuracy_score(y_test, y_test_predictions)
+    logger.info(f"Accuracy: {accuracy}")
+
+    # confusion matrix
+    confusion_matrix_ = confusion_matrix(y_test, y_test_predictions)
+    logger.info(f"Confusion matrix: {confusion_matrix_}")
+
+    # classification report
+    classification_report_ = classification_report(y_test, y_test_predictions)
+    logger.info(f"Classification report: {classification_report_}")
 
     return ohlc_data
 
