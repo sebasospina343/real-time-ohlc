@@ -18,4 +18,6 @@ RUN poetry install
 # Remove build tools to reduce image size
 RUN apt-get remove -y gcc g++ make && apt-get autoremove -y && apt-get clean
 
+ENV PYTHONPATH=/app
+
 CMD ["poetry", "run", "python", "src/main.py"]

@@ -1,8 +1,8 @@
 from quixstreams import Application
 from loguru import logger
 import json
-from src.hopsworks_api import push_data_to_feature_store
-from src.config import config
+from hopsworks_api import push_data_to_feature_store
+from config import config
 from typing import Optional
 from datetime import datetime, timezone
 

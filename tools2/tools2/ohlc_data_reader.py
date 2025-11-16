@@ -72,6 +72,7 @@ class OhlcDataReader:
         return data
 
     def read_from_offline_store(self, last_n_days_to_fetch_from_store:int):
+        print("GROUPPP NAMEMEM",self.feature_group_name)
         feature_view = self.get_feature_view(
             feature_group_name=self.feature_group_name,
             feature_group_version=self.feature_group_version,

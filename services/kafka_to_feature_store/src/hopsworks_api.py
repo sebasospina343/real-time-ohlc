@@ -1,7 +1,7 @@
 import hopsworks
 from typing import Dict, List
 import pandas as pd
-from src.config import config
+from config import config
 from loguru import logger
 
 def push_data_to_feature_store(

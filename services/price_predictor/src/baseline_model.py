@@ -10,7 +10,7 @@ class BaselineModel:
         self.n_candles_into_future = n_candles_into_future
         self.discretization_tresholds = discretization_tresholds
 
-    def train(self) -> None:
+    def train(self, X: pd.DataFrame, y: pd.Series) -> None:
         pass
 
     def predict(self, X: pd.DataFrame) -> pd.Series:

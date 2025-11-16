@@ -8,6 +8,8 @@ from baseline_model import BaselineModel
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
+from feature_engineering import add_momentum_indicator
+from feature_engineering import add_volatility_indicator
 
 def split_data_into_train_and_test(
     data: pd.DataFrame,
@@ -131,6 +133,18 @@ def train(
     classification_report_ = classification_report(y_test, y_test_predictions)
     logger.info(f"Classification report: {classification_report_}")
 
+    # train the model
+    model = BaselineModel(
+        n_candles_into_future=prediction_window_sec // ohlc_window_sec,
+        discretization_tresholds=discretization_tresholds,
+    )
+    model.train(X_train, y_train)
+
+      # add momentum indicator
+    X_train = add_momentum_indicator(X_train, timeperiod=14)
+    X_train = add_volatility_indicator(X_train, timeperiod=14)
+    # ohlc_test = add_momentum_indicator(X_test, timeperiod=14)
+
     return ohlc_data
 
 def interpolate_missing_candles(data: pd.DataFrame) -> pd.DataFrame:
@@ -168,6 +182,6 @@ if __name__ == "__main__":
         ohlc_window_sec=config.ohlc_window_sec,
         discretization_tresholds=[-0.0001, 0.0001],
         prediction_window_sec=60 * 5,
-        last_n_days_to_fetch_from_store=5,
-        last_n_days_to_test_model=1,
+        last_n_days_to_fetch_from_store=90,
+        last_n_days_to_test_model=30,
     )
