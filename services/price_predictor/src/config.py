@@ -14,5 +14,7 @@ class Config(BaseSettings):
     feature_group_version: int = os.environ.get('FEATURE_GROUP_VERSION')
     last_n_minutes: int = os.environ.get('LAST_N_MINUTES')
     ohlc_window_sec: int = OHLC_WINDOW_SEC
+    comet_project_name: str = os.environ.get('COMET_PROJECT_NAME')
+    comet_api_key: str = os.environ.get('COMET_API_KEY')
 
 config = Config()
