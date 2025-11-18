@@ -14,6 +14,11 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 90
+  - name: KAFKA_TOPIC
+    inputType: OutputTopic
+    multiline: false
+    defaultValue: trade
+    required: true
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
