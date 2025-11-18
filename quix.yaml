@@ -53,3 +53,6 @@ deployments:
         inputType: FreeText
         value: 90
 
+# This section describes the Topics of the data pipeline
+topics:
+  - name: trade
