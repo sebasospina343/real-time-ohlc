@@ -15,6 +15,10 @@ variables:
     multiline: false
     defaultValue: live
     required: true
+  - name: LAST_N_DAYS
+    inputType: FreeText
+    multiline: false
+    defaultValue: 90
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
