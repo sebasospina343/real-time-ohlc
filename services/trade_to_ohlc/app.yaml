@@ -6,6 +6,11 @@ variables:
     multiline: false
     defaultValue: trade
     required: true
+  - name: KAFKA_OUTPUT_TOPIC
+    inputType: OutputTopic
+    multiline: false
+    defaultValue: ohlc
+    required: true
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
