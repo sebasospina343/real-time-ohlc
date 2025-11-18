@@ -33,3 +33,4 @@ deployments:
 # This section describes the Topics of the data pipeline
 topics:
   - name: trade
+    dataTier: Bronze
