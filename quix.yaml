@@ -4,29 +4,4 @@
 metadata:
   version: 1.0
 
-# This section describes the Deployments of the data pipeline
-deployments:
-  - name: trade_producer 3
-    application: services/trade_producer
-    version: latest
-    deploymentType: Service
-    resources:
-      cpu: 200
-      memory: 500
-      replicas: 1
-    variables:
-      - name: OHLC_WINDOWS_SECONDS
-        inputType: FreeText
-        value: 60
-      - name: LIVE_OR_HISTORICAL
-        inputType: FreeText
-        required: true
-        value: live
-      - name: LAST_N_DAYS
-        inputType: FreeText
-        value: 90
-      - name: KAFKA_TOPIC
-        inputType: OutputTopic
-        required: true
-        value: trade
 
