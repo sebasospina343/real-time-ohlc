@@ -6,6 +6,10 @@ variables:
     multiline: false
     defaultValue: trade
     required: true
+  - name: OHLC_WINDOWS_SECONDS
+    inputType: FreeText
+    multiline: false
+    defaultValue: 60
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
