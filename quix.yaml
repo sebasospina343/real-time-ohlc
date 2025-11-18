@@ -29,6 +29,7 @@ deployments:
       - name: LAST_N_DAYS
         inputType: FreeText
         value: 90
+    disabled: true
   - name: trade_producer 2
     application: services/trade_producer
     version: latest
