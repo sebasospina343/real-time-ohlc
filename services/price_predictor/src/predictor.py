@@ -1,7 +1,7 @@
 import pickle
 from pydantic import BaseModel
 from tools2.ohlc_data_reader import OhlcDataReader
-from config import config
+from src.config import config
 from loguru import logger
 from comet_ml import Model
 
@@ -79,11 +79,11 @@ class Predictor:
         ohlc_data = self.ohlc_data_reader.read_from_online_store()
 
         # Step 2: Preprocess data
-        from training import interpolate_missing_candles
+        from src.training import interpolate_missing_candles
         ohlc_data = interpolate_missing_candles(ohlc_data)
 
         # Step 3: add features
-        from feature_engineering import add_features
+        from src.feature_engineering import add_features
         ohlc_data = add_features(
             data=ohlc_data,
             timeperiod=14,

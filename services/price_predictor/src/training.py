@@ -1,11 +1,11 @@
 from tools2.ohlc_data_reader import OhlcDataReader
-from config import config
+from src.config import config
 import pandas as pd
 from loguru import logger
 from typing import Tuple
-from baseline_model import BaselineModel
-from model_factory import fit_lasso_regressor, fit_xgboost_regressor
-from feature_engineering import add_features
+from src.baseline_model import BaselineModel
+from src.model_factory import fit_lasso_regressor, fit_xgboost_regressor
+from src.feature_engineering import add_features
 import comet_ml
 import matplotlib.pyplot as plt
 
