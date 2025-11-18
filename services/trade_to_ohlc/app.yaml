@@ -18,6 +18,10 @@ variables:
   - name: KAFKA_CONSUMER_GROUP
     inputType: FreeText
     multiline: false
+  - name: OHLC_WINDOWS_SECONDS
+    inputType: FreeText
+    multiline: false
+    defaultValue: 60
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
