@@ -75,6 +75,31 @@ deployments:
         inputType: OutputTopic
         required: true
         value: trade
+  - name: trade_to_ohlc
+    application: services/trade_to_ohlc
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: KAFKA_INPUT_TOPIC
+        inputType: InputTopic
+        required: true
+        value: trade
+      - name: KAFKA_OUTPUT_TOPIC
+        inputType: OutputTopic
+        required: true
+        value: ohlc
+      - name: KAFKA_FEATURE_GROUP_VERSION
+        inputType: FreeText
+        value: 1
+      - name: KAFKA_CONSUMER_GROUP
+        inputType: FreeText
+      - name: OHLC_WINDOWS_SECONDS
+        inputType: FreeText
+        value: 60
 
 # This section describes the Topics of the data pipeline
 topics:
