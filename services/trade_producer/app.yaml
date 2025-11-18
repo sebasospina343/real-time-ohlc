@@ -1,11 +1,6 @@
 name: trade_producer
 language: python
 variables:
-  - name: KAFKA_TOPIC
-    inputType: OutputTopic
-    multiline: false
-    defaultValue: trade
-    required: true
   - name: OHLC_WINDOWS_SECONDS
     inputType: FreeText
     multiline: false
