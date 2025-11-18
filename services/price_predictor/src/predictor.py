@@ -11,6 +11,14 @@ class PredictorOutput(BaseModel):
     predicted_timestamp: int
     predicted_timestamp_str: str
 
+    def to_dict(self) -> dict:
+        return {
+            "prediction": self.prediction,
+            "product_id": self.product_id,
+            "predicted_timestamp": self.predicted_timestamp,
+            "predicted_timestamp_str": self.predicted_timestamp_str,
+        }
+
 
 class Predictor:
     def __init__(self, model_path: str, ohlc_window_sec: int, feature_view_name: str, feature_view_version: int, feature_group_name: str, feature_group_version: int, last_n_minutes: int, prediction_window_sec: int, last_n_days_to_fetch_from_store: int, last_n_days_to_test_model: int):
