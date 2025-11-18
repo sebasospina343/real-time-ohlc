@@ -11,6 +11,9 @@ variables:
     multiline: false
     defaultValue: ohlc
     required: true
+  - name: KAFKA_FEATURE_GROUP_VERSION
+    inputType: FreeText
+    multiline: false
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
