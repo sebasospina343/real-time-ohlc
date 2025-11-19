@@ -52,7 +52,7 @@ def produce_trades(
                 )
 
                 producer.produce(
-                    topic=kafka_topic_name, 
+                    topic=topic, 
                     value=message.value, 
                     key=message.key,
                     timestamp=message.timestamp,
