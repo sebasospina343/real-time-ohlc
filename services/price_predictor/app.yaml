@@ -5,6 +5,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: ohlc_feature_view
+  - name: FEATURE_VIEW_VERSION
+    inputType: FreeText
+    multiline: false
+    defaultValue: 1
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
