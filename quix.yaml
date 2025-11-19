@@ -59,6 +59,40 @@ deployments:
       - name: OHLC_WINDOWS_SECONDS
         inputType: InputTopic
         value: 60
+  - name: kafka_to_feature_store
+    application: services/kafka_to_feature_store
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: KAFKA_TOPIC
+        inputType: InputTopic
+        required: true
+        value: ohlc
+      - name: KAFKA_CONSUMER_GROUP
+        inputType: FreeText
+        value: trade_to_ohlc_live6
+      - name: FEATURE_GROUP_NAME
+        inputType: FreeText
+        value: ohlc_feature_group
+      - name: FEATURE_GROUP_VERSION
+        inputType: FreeText
+        value: 1
+      - name: BUFFER_SIZE
+        inputType: FreeText
+        value: 1440
+      - name: LIVE_OR_HISTORICAL
+        inputType: FreeText
+        value: live
+      - name: HOPSWORKS_PROJECT_NAME
+        inputType: FreeText
+        value: testone
+      - name: HOPSWORKS_API_KEY
+        inputType: FreeText
+        value: jJ3EIJAs48fiyY7p.x6b3cmLBwWldeqRZRe0yLfPdCzwcvm9gyEow6jgLY7QbskO4nIov6JuZFsT7ndEp
 
 # This section describes the Topics of the data pipeline
 topics:
