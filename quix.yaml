@@ -26,7 +26,7 @@ deployments:
         inputType: FreeText
         value: live
   - name: trade_to_ohlc
-    application: services/trade_to_ohlc/src
+    application: services/trade_to_ohlc
     version: latest
     deploymentType: Service
     resources:
