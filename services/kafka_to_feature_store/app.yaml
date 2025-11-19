@@ -18,6 +18,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 1
+  - name: BUFFER_SIZE
+    inputType: FreeText
+    multiline: false
+    defaultValue: 1440
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
