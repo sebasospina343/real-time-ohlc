@@ -52,7 +52,7 @@ def produce_trades(
                 )
 
                 producer.produce(
-                    topic=topic, 
+                    topic=topic.name, 
                     value=message.value, 
                     key=message.key,
                     timestamp=message.timestamp,
