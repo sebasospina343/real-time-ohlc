@@ -29,6 +29,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: hxEjTuG2oq86BVOjyihkHTH31
+  - name: COMET_PROJECT_NAME
+    inputType: FreeText
+    multiline: false
+    defaultValue: real-time-ohlc
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
