@@ -85,6 +85,42 @@ deployments:
       - name: OHLC_WINDOWS_SECONDS
         inputType: InputTopic
         value: 60
+  - name: price_predictor
+    application: services/price_predictor
+    version: latest
+    deploymentType: Service
+    resources:
+      cpu: 200
+      memory: 500
+      replicas: 1
+    variables:
+      - name: FEATURE_VIEW_NAME
+        inputType: FreeText
+        value: ohlc_feature_view
+      - name: FEATURE_VIEW_VERSION
+        inputType: FreeText
+        value: 1
+      - name: FEATURE_GROUP_NAME
+        inputType: FreeText
+        value: ohlc_feature_group
+      - name: FEATURE_GROUP_VERSION
+        inputType: FreeText
+        value: 1
+      - name: LAST_N_MINUTES
+        inputType: FreeText
+        value: 10
+      - name: OHLC_WINDOW_SEC
+        inputType: FreeText
+        value: 60
+      - name: COMET_API_KEY
+        inputType: FreeText
+        value: hxEjTuG2oq86BVOjyihkHTH31
+      - name: COMET_PROJECT_NAME
+        inputType: FreeText
+        value: real-time-ohlc
+      - name: COMET_WORKSPACE
+        inputType: FreeText
+        value: sebastian-ospina
 
 # This section describes the Topics of the data pipeline
 topics:
