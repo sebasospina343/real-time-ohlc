@@ -22,4 +22,4 @@ ENV PYTHONPATH=/app
 
 EXPOSE 80
 
-CMD ["poetry", "run", "gunicorn", "-w", "4", "-b", "0.0.0.0:80", "src.api:app"]
+CMD ["poetry", "run", "gunicorn", "-w", "2", "-b", "0.0.0.0:80", "src.api:app"]
