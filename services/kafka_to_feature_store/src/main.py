@@ -27,12 +27,14 @@ def kafka_to_feature_store(
         auto_offset_reset="earliest"
     )
 
+    topic = app.topic(name=kafka_topic, value_serializer='json')
+
     last_saved_to_feature_ts = get_current_utc_seconds()
 
     buffer = []
     
     with app.get_consumer() as consumer:
-        consumer.subscribe(topics=[kafka_topic])
+        consumer.subscribe(topics=[topic.name])
 
         while True:
             msg = consumer.poll(1)
