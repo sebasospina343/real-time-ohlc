@@ -22,6 +22,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 1440
+  - name: LIVE_OR_HISTORICAL
+    inputType: FreeText
+    multiline: false
+    defaultValue: live
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
