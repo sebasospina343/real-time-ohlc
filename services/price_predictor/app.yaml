@@ -17,6 +17,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 1
+  - name: LAST_N_MINUTES
+    inputType: FreeText
+    multiline: false
+    defaultValue: 10
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
