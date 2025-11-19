@@ -15,6 +15,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 1
+  - name: KAFKA_CONSUMER_GROUP
+    inputType: FreeText
+    multiline: false
+    defaultValue: trade_to_ohlc_live6
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
