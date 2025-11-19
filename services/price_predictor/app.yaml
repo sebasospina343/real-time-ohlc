@@ -37,6 +37,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: sebastian-ospina
+  - name: HOPSWORKS_PROJECT_NAME
+    inputType: FreeText
+    multiline: false
+    defaultValue: testone
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
