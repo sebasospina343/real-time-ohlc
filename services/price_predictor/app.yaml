@@ -41,6 +41,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: testone
+  - name: HOPSWORKS_API_KEY
+    inputType: FreeText
+    multiline: false
+    defaultValue: jJ3EIJAs48fiyY7p.x6b3cmLBwWldeqRZRe0yLfPdCzwcvm9gyEow6jgLY7QbskO4nIov6JuZFsT7ndEp
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
