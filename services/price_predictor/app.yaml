@@ -1,6 +1,10 @@
 name: price_predictor
 language: python
-variables: []
+variables:
+  - name: FEATURE_VIEW_NAME
+    inputType: FreeText
+    multiline: false
+    defaultValue: ohlc_feature_view
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
