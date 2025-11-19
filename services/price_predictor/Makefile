@@ -27,5 +27,5 @@ free-port:
 
 run: build stop free-port
 	sed 's/^export //' .live.env .tools2.env > .docker.env && \
-	docker run --env-file .docker.env -p 5000:5000 price-predictor-api && \
+	docker run --env-file .docker.env -p 5005:80 price-predictor-api && \
 	rm -f .docker.env

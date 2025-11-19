@@ -20,6 +20,6 @@ RUN apt-get remove -y gcc g++ make && apt-get autoremove -y && apt-get clean
 
 ENV PYTHONPATH=/app
 
-EXPOSE 5000
+EXPOSE 80
 
-CMD ["poetry", "run", "gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "src.api:app"]
+CMD ["poetry", "run", "gunicorn", "-w", "4", "-b", "0.0.0.0:80", "src.api:app"]
