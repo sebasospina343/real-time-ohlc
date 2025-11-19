@@ -33,6 +33,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: real-time-ohlc
+  - name: COMET_WORKSPACE
+    inputType: FreeText
+    multiline: false
+    defaultValue: sebastian-ospina
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
