@@ -64,4 +64,3 @@ deployments:
 topics:
   - name: trade
   - name: ohlc
-  - name: 60
