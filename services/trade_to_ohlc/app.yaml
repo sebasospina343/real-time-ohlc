@@ -20,9 +20,8 @@ variables:
     multiline: false
     defaultValue: trade_to_ohlc_live6
   - name: OHLC_WINDOWS_SECONDS
-    inputType: InputTopic
+    inputType: FreeText
     multiline: false
-    defaultValue: 60
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
