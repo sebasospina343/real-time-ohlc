@@ -21,6 +21,10 @@ variables:
     inputType: FreeText
     multiline: false
     defaultValue: 10
+  - name: OHLC_WINDOW_SEC
+    inputType: FreeText
+    multiline: false
+    defaultValue: 60
 dockerfile: Dockerfile
 runEntryPoint: src/main.py
 defaultFile: src/main.py
