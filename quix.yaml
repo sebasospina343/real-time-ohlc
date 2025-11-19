@@ -90,8 +90,8 @@ deployments:
     version: latest
     deploymentType: Service
     resources:
-      cpu: 200
-      memory: 500
+      cpu: 1000
+      memory: 1000
       replicas: 1
     publicAccess:
       enabled: true
@@ -124,6 +124,12 @@ deployments:
       - name: COMET_WORKSPACE
         inputType: FreeText
         value: sebastian-ospina
+      - name: HOPSWORKS_PROJECT_NAME
+        inputType: FreeText
+        value: testone
+      - name: HOPSWORKS_API_KEY
+        inputType: FreeText
+        value: jJ3EIJAs48fiyY7p.x6b3cmLBwWldeqRZRe0yLfPdCzwcvm9gyEow6jgLY7QbskO4nIov6JuZFsT7ndEp
 
 # This section describes the Topics of the data pipeline
 topics:
